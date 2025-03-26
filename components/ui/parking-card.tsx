@@ -78,7 +78,7 @@ export default function ParkingCard({
               <Button
                 onClick={() => handleEndParking(id)}
                 variant="destructive"
-                className="w-min"
+                className="w-min hover:bg-red-700 transition-colors"
               >
                 End parking
               </Button>
