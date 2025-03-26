@@ -9,7 +9,7 @@ const openSans = Open_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Park Manager",
+  title: "JustPark",
   description: "Manage your parking lot",
 };
 

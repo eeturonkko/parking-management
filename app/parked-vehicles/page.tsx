@@ -6,6 +6,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import ParkingCard from "@/components/ui/parking-card";
+import NoParkedVehicles from "@/components/ui/no-parked-vehicles";
 import ParkingCardSkeleton from "@/components/ui/parking-card-skeleton";
 
 export default function ParkedVehicles() {
@@ -20,15 +21,19 @@ export default function ParkedVehicles() {
       </div>
 
       <Suspense fallback={<ParkingCardSkeleton />}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {registeredVehicles?.map(({ _id, plate, _creationTime }) => (
-            <ParkingCard
-              key={_id}
-              licensePlate={plate}
-              parkingStarted={new Date(_creationTime)}
-            />
-          ))}
-        </div>
+        {registeredVehicles && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {registeredVehicles?.map(({ _id, plate, _creationTime }) => (
+              <ParkingCard
+                key={_id}
+                licensePlate={plate}
+                parkingStarted={new Date(_creationTime)}
+              />
+            ))}
+          </div>
+        )}
+
+        {registeredVehicles?.length === 0 && <NoParkedVehicles />}
       </Suspense>
     </main>
   );
