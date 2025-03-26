@@ -1,4 +1,6 @@
 import LicensePlateRegistration from "@/components/ui/license-plate-reg";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -10,6 +12,11 @@ export default function Home() {
         Register your license plate below to park your vehicle
       </p>
       <LicensePlateRegistration />
+      <Button className="mt-4 ">
+        <Link target="_blank" href="/parked-vehicles">
+          View parked vehicles
+        </Link>
+      </Button>
     </main>
   );
 }

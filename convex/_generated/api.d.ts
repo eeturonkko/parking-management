@@ -13,6 +13,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as crons from "../crons.js";
 import type * as registeredVehicles from "../registeredVehicles.js";
 
 /**
@@ -24,6 +25,7 @@ import type * as registeredVehicles from "../registeredVehicles.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  crons: typeof crons;
   registeredVehicles: typeof registeredVehicles;
 }>;
 export declare const api: FilterApi<
