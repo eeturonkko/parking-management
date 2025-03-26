@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
+import { Suspense } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ParkingCard from "@/components/ui/parking-card";
+import ParkingCardSkeleton from "@/components/ui/parking-card-skeleton";
 
 export default function ParkedVehicles() {
   const registeredVehicles = useQuery(api.registeredVehicles.get);
@@ -17,15 +19,17 @@ export default function ParkedVehicles() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {registeredVehicles?.map(({ _id, plate, _creationTime }) => (
-          <ParkingCard
-            key={_id}
-            licensePlate={plate}
-            parkingStarted={new Date(_creationTime)}
-          />
-        ))}
-      </div>
+      <Suspense fallback={<ParkingCardSkeleton />}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {registeredVehicles?.map(({ _id, plate, _creationTime }) => (
+            <ParkingCard
+              key={_id}
+              licensePlate={plate}
+              parkingStarted={new Date(_creationTime)}
+            />
+          ))}
+        </div>
+      </Suspense>
     </main>
   );
 }
