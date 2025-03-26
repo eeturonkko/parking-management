@@ -4,12 +4,12 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="container mx-auto min-h-screen py-12 max-w-3xl">
-      <h1 className="font-bold text-5xl text-center">
-        Welcome to the Parking Lot
+    <main className="container mx-auto min-h-screen mt-48 max-w-xl">
+      <h1 className="font-bold text-4xl text-center">
+        Welcome to park JustParked!
       </h1>
-      <p className="font-semibold text-xl text-center my-3">
-        Register your license plate below to park your vehicle
+      <p className="font-semibold text-lg text-center my-3">
+        Register your license plate below
       </p>
       <LicensePlateRegistration />
       <Button className="mt-4 ">
