@@ -9,10 +9,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
 import { useMutation } from "convex/react";
+import { Badge } from "@/components/ui/badge";
+import { api } from "@/convex/_generated/api";
+import { Button } from "@/components/ui/button";
 import { Id } from "@/convex/_generated/dataModel";
 
 interface ParkingCardProps {
@@ -41,6 +42,7 @@ export default function ParkingCard({
   function handleEndParking(id: Id<"registeredVehicles">) {
     console.log(`Ending parking for vehicle with id: ${id}`);
     removeVehicle({ id });
+    toast(`Parking ended successfully `);
   }
 
   return (

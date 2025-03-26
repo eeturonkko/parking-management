@@ -8,6 +8,7 @@ import { Car, CheckCircle } from "lucide-react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -60,6 +61,9 @@ export default function LicensePlateRegistration() {
     registerVehicle({ plate: formattedPlate });
     setSubmittedPlate(formattedPlate);
     setIsSubmitted(true);
+    toast(
+      `Vehicle with license plate ${formattedPlate} registered successfully`
+    );
   }
 
   function resetForm() {
