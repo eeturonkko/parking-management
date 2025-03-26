@@ -31,7 +31,7 @@ import { Input } from "@/components/ui/input";
 const licensePlateSchema = z.object({
   licensePlate: z
     .string()
-    .min(2, { message: "License plate must be at least 2 characters" })
+    .min(7, { message: "License plate must be 7 characters" })
     .max(7, { message: "License plate cannot exceed 7 characters" })
     .refine((value) => /^[A-Z0-9-]+$/i.test(value), {
       message: "License plate can only contain letters, numbers, and hyphens",

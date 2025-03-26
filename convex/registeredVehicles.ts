@@ -17,7 +17,7 @@ export const createRegisteredVehicle = mutation({
   },
 });
 
-export const removeRegisteredVehicle = internalMutation({
+export const removeRegisteredVehicle = mutation({
   args: {
     id: v.id("registeredVehicles"),
   },

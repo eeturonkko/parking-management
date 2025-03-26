@@ -26,6 +26,7 @@ export default function ParkedVehicles() {
             {registeredVehicles?.map(({ _id, plate, _creationTime }) => (
               <ParkingCard
                 key={_id}
+                id={_id}
                 licensePlate={plate}
                 parkingStarted={new Date(_creationTime)}
               />

@@ -10,14 +10,20 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { api } from "@/convex/_generated/api";
+import { useMutation } from "convex/react";
+import { Id } from "@/convex/_generated/dataModel";
 
 interface ParkingCardProps {
+  id: Id<"registeredVehicles">;
   licensePlate: string;
   parkingStarted: Date;
 }
 
 export default function ParkingCard({
-  licensePlate = "ABC-1234",
+  id,
+  licensePlate = "ABC-123",
   parkingStarted = new Date(Date.now() - 3600000),
 }: ParkingCardProps) {
   const parkingDuration = formatDistanceToNow(parkingStarted, {
@@ -27,6 +33,15 @@ export default function ParkingCard({
     hour: "2-digit",
     minute: "2-digit",
   });
+
+  const removeVehicle = useMutation(
+    api.registeredVehicles.removeRegisteredVehicle
+  );
+
+  function handleEndParking(id: Id<"registeredVehicles">) {
+    console.log(`Ending parking for vehicle with id: ${id}`);
+    removeVehicle({ id });
+  }
 
   return (
     <Card className="w-full max-w-sm shadow-md hover:shadow-lg transition-shadow">
@@ -51,11 +66,22 @@ export default function ParkingCard({
             <span className="text-sm text-muted-foreground">
               Parking Started
             </span>
-            <div className="flex items-center space-x-2">
-              <span className="text-lg font-medium">{formattedStartTime}</span>
-              <Badge variant="outline" className="bg-primary/10">
-                {parkingDuration} ago
-              </Badge>
+            <div className="flex flex-col space-y-3">
+              <div className="flex items-center space-x-2 ">
+                <span className="text-lg font-medium">
+                  {formattedStartTime}
+                </span>
+                <Badge variant="outline" className="bg-primary/10">
+                  {parkingDuration} ago
+                </Badge>
+              </div>
+              <Button
+                onClick={() => handleEndParking(id)}
+                variant="destructive"
+                className="w-min"
+              >
+                End parking
+              </Button>
             </div>
           </div>
         </div>
