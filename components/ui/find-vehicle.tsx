@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Car, CheckCircle } from "lucide-react";
-import { useMutation } from "convex/react";
+import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import {
@@ -39,9 +39,17 @@ const licensePlateSchema = z.object({
 
 type FormValues = z.infer<typeof licensePlateSchema>;
 
-export default function LicensePlateRegistration() {
+export default function FindVehicle() {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submittedPlate, setSubmittedPlate] = useState("");
+  const [, setSubmittedPlate] = useState("");
+  // Use state to store the plate to search for
+  const [plateToSearch, setPlateToSearch] = useState<string | null>(null);
+
+  // Pass the arguments directly to useQuery
+  const vehicle = useQuery(
+    api.registeredVehicles.getVehicleByPlate,
+    plateToSearch ? { plate: plateToSearch } : "skip"
+  );
 
   const form = useForm<FormValues>({
     resolver: zodResolver(licensePlateSchema),
@@ -50,13 +58,9 @@ export default function LicensePlateRegistration() {
     },
   });
 
-  const registerVehicle = useMutation(
-    api.registeredVehicles.createRegisteredVehicle
-  );
-
   function onSubmit(data: FormValues) {
     const formattedPlate = data.licensePlate.toUpperCase();
-    registerVehicle({ plate: formattedPlate });
+    setPlateToSearch(formattedPlate);
     setSubmittedPlate(formattedPlate);
     setIsSubmitted(true);
   }
@@ -76,7 +80,7 @@ export default function LicensePlateRegistration() {
                 <Car className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <CardTitle>License Plate Registration</CardTitle>
+                <CardTitle>Find your vehicle</CardTitle>
                 <CardDescription>
                   Enter your vehicles license plate number
                 </CardDescription>
@@ -111,14 +115,14 @@ export default function LicensePlateRegistration() {
                   )}
                 />
                 <Button type="submit" className="w-full">
-                  Register Vehicle
+                  Find Vehicle
                 </Button>
               </form>
             </Form>
           </CardContent>
         </Card>
       ) : (
-        <Card className="shadow-md bg-green-50">
+        <Card className="shadow-md bg-green-50 w-[600px]">
           <CardHeader>
             <div className="flex justify-center mb-2">
               <div className="bg-green-100 p-3 rounded-full">
@@ -126,22 +130,27 @@ export default function LicensePlateRegistration() {
               </div>
             </div>
             <CardTitle className="text-center">
-              Registration Successful
+              {vehicle ? "Vehicle found" : "Vehicle not found"}
             </CardTitle>
             <CardDescription className="text-center">
-              Your license plate has been registered
+              {vehicle
+                ? `Your parking is ${vehicle.expired ? "expired" : "active"}`
+                : "Please try again"}
             </CardDescription>
           </CardHeader>
-          <CardContent className="pt-4">
-            <div className="bg-yellow-50 border-2 border-yellow-400 rounded-md px-6 py-3 mx-auto text-center max-w-[200px]">
-              <span className="text-2xl font-mono font-bold tracking-wider uppercase">
-                {submittedPlate}
-              </span>
-            </div>
-          </CardContent>
+          {vehicle ? (
+            <CardContent className="pt-4">
+              <div className="bg-yellow-50 border-2 border-yellow-400 rounded-md px-6 py-3 mx-auto text-center max-w-[200px]">
+                <span className="text-2xl font-mono font-bold tracking-wider uppercase">
+                  {vehicle?.plate}
+                </span>
+              </div>
+            </CardContent>
+          ) : null}
+
           <CardFooter className="flex justify-center pt-4">
             <Button onClick={resetForm} variant="outline">
-              Register Another Vehicle
+              Find Another Vehicle
             </Button>
           </CardFooter>
         </Card>

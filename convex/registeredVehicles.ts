@@ -8,6 +8,18 @@ export const get = query({
   },
 });
 
+export const getVehicleByPlate = query({
+  args: {
+    plate: v.string(),
+  },
+  handler: async (ctx, { plate }) => {
+    return await ctx.db
+      .query("registeredVehicles")
+      .filter((q) => q.eq(q.field("plate"), plate))
+      .first();
+  },
+});
+
 export const createRegisteredVehicle = mutation({
   args: {
     plate: v.string(),
