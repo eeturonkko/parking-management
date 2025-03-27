@@ -6,7 +6,7 @@ const crons = cronJobs();
 crons.hourly(
   "Remove expired vehicles",
   { minuteUTC: 0 },
-  internal.registeredVehicles.removeExpiredVehicles
+  internal.registeredVehicles.updateVehicleExpiration
 );
 
 export default crons;

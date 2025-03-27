@@ -20,12 +20,14 @@ interface ParkingCardProps {
   id: Id<"registeredVehicles">;
   licensePlate: string;
   parkingStarted: Date;
+  expired: boolean;
 }
 
 export default function ParkingCard({
   id,
   licensePlate = "ABC-123",
   parkingStarted = new Date(Date.now() - 3600000),
+  expired = false,
 }: ParkingCardProps) {
   const parkingDuration = formatDistanceToNow(parkingStarted, {
     addSuffix: false,
@@ -92,8 +94,17 @@ export default function ParkingCard({
         <div className="w-full flex justify-between items-center">
           <span className="text-sm text-muted-foreground">Parking Active</span>
           <div className="flex items-center">
-            <span className="h-2 w-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
-            <span className="text-sm font-medium">Active</span>
+            {!expired ? (
+              <>
+                <span className="h-2 w-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
+                <span className="text-sm font-medium">Active</span>
+              </>
+            ) : (
+              <>
+                <span className="h-2 w-2 rounded-full bg-red-500 mr-2 animate-pulse"></span>
+                <span className="text-sm font-medium">Expired</span>
+              </>
+            )}
           </div>
         </div>
       </CardFooter>

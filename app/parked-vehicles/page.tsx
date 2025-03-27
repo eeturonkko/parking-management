@@ -23,14 +23,17 @@ export default function ParkedVehicles() {
       <Suspense fallback={<ParkingCardSkeleton />}>
         {registeredVehicles && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {registeredVehicles?.map(({ _id, plate, _creationTime }) => (
-              <ParkingCard
-                key={_id}
-                id={_id}
-                licensePlate={plate}
-                parkingStarted={new Date(_creationTime)}
-              />
-            ))}
+            {registeredVehicles?.map(
+              ({ _id, plate, _creationTime, expired }) => (
+                <ParkingCard
+                  key={_id}
+                  id={_id}
+                  licensePlate={plate}
+                  parkingStarted={new Date(_creationTime)}
+                  expired={expired}
+                />
+              )
+            )}
           </div>
         )}
 

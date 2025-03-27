@@ -13,7 +13,7 @@ export const createRegisteredVehicle = mutation({
     plate: v.string(),
   },
   handler: async (ctx, { plate }) => {
-    await ctx.db.insert("registeredVehicles", { plate });
+    await ctx.db.insert("registeredVehicles", { plate, expired: false });
   },
 });
 
@@ -41,6 +41,25 @@ export const removeExpiredVehicles = internalMutation({
     // Remove each expired vehicle
     for (const vehicle of expiredVehicles) {
       await ctx.db.delete(vehicle._id);
+    }
+  },
+});
+
+export const updateVehicleExpiration = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    const FOUR_HOURS_IN_MS = 4 * 60 * 60 * 1000;
+    const currentTime = Date.now();
+    const expirationTime = currentTime - FOUR_HOURS_IN_MS;
+
+    const expiredVehicles = await ctx.db
+      .query("registeredVehicles")
+      .filter((q) => q.lt(q.field("_creationTime"), expirationTime))
+      .collect();
+
+    // Update expired to true for each expired vehicle
+    for (const vehicle of expiredVehicles) {
+      await ctx.db.patch(vehicle._id, { expired: true });
     }
   },
 });
