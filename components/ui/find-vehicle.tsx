@@ -40,12 +40,10 @@ const licensePlateSchema = z.object({
 type FormValues = z.infer<typeof licensePlateSchema>;
 
 export default function FindVehicle() {
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [, setSubmittedPlate] = useState("");
-  // Use state to store the plate to search for
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [plateToSearch, setPlateToSearch] = useState<string | null>(null);
 
-  // Pass the arguments directly to useQuery
   const vehicle = useQuery(
     api.registeredVehicles.getVehicleByPlate,
     plateToSearch ? { plate: plateToSearch } : "skip"
@@ -145,6 +143,13 @@ export default function FindVehicle() {
                   {vehicle?.plate}
                 </span>
               </div>
+              <span className="text-center block mt-4 text-sm">
+                {vehicle?.expired ? (
+                  <Button variant="destructive">Pay fine</Button>
+                ) : (
+                  <Button variant="destructive">End parking</Button>
+                )}
+              </span>
             </CardContent>
           ) : null}
 
