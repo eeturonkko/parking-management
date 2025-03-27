@@ -118,7 +118,7 @@ export default function LicensePlateRegistration() {
           </CardContent>
         </Card>
       ) : (
-        <Card className="shadow-md bg-green-50">
+        <Card className="shadow-md bg-green-50 w-[600px]">
           <CardHeader>
             <div className="flex justify-center mb-2">
               <div className="bg-green-100 p-3 rounded-full">
